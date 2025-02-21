@@ -38,7 +38,7 @@ const Services = () => {
           className="mt-3 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-white md:text-7xl"
         >
           <div>
-            <span className="font-extralight text-5xl">service'S</span>
+            <span className="font-extralight text-5xl">service&apos;S</span>
             <TypewriterEffectSmooth words={words} />
           </div>
         </motion.h1>

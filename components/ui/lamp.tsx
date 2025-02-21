@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { PinContainer } from "./3d-pin";
 
 export const LampContainer = ({
   children,
