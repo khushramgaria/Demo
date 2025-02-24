@@ -1,15 +1,13 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import React, {
   createContext,
   useState,
   useContext,
   useRef,
   useEffect,
-  ElementType,
-  ComponentPropsWithoutRef,
-  ReactNode,
 } from "react";
 
 const MouseEnterContext = createContext<
@@ -37,12 +35,12 @@ export const CardContainer = ({
     containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
   };
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsMouseEntered(true);
     if (!containerRef.current) return;
   };
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     setIsMouseEntered(false);
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
@@ -51,7 +49,7 @@ export const CardContainer = ({
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
         className={cn(
-          " flex items-center justify-center",
+          "py-20 flex items-center justify-center",
           containerClassName
         )}
         style={{
@@ -97,19 +95,8 @@ export const CardBody = ({
   );
 };
 
-interface CardItemProps<T extends ElementType = 'div'> {
-  as?: T;
-  children: ReactNode;
-  className?: string;
-  translateX?: number;
-  translateY?: number;
-  translateZ?: number;
-  rotateX?: number;
-  rotateY?: number;
-  rotateZ?: number;
-}
-export const CardItem = <T extends ElementType = 'div'>({
-  as: Component = 'div',
+export const CardItem = <T extends React.ElementType = "div">({
+  as,
   children,
   className,
   translateX = 0,
@@ -118,10 +105,25 @@ export const CardItem = <T extends ElementType = 'div'>({
   rotateX = 0,
   rotateY = 0,
   rotateZ = 0,
-}: CardItemProps<T> & ComponentPropsWithoutRef<T>) => {
+  ...rest
+}: {
+  as?: T;
+  children: React.ReactNode;
+  className?: string;
+  translateX?: number | string;
+  translateY?: number | string;
+  translateZ?: number | string;
+  rotateX?: number | string;
+  rotateY?: number | string;
+  rotateZ?: number | string;
+} & Omit<React.ComponentPropsWithoutRef<T>, "as" | "children" | "className">) => {
+  const Tag = as || "div";
   const ref = useRef<HTMLDivElement>(null);
   const [isMouseEntered] = useMouseEnter();
 
+  useEffect(() => {
+    handleAnimations();
+  }, [isMouseEntered]);
 
   const handleAnimations = () => {
     if (!ref.current) return;
@@ -132,18 +134,14 @@ export const CardItem = <T extends ElementType = 'div'>({
     }
   };
 
-  
-  useEffect(() => {
-    handleAnimations();
-  }, [isMouseEntered, handleAnimations]);
-
-  return (
-    <Component
-      ref={ref}
-      className={cn("w-fit transition duration-200 ease-linear", className)}
-    >
-      {children}
-    </Component>
+  return React.createElement(
+    Tag,
+    {
+      ref,
+      className: cn("w-fit transition duration-200 ease-linear", className),
+      ...rest,
+    },
+    children
   );
 };
 
