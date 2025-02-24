@@ -7,6 +7,8 @@ import React, {
   useContext,
   useRef,
   useEffect,
+  ElementType,
+  ReactNode,
 } from "react";
 
 const MouseEnterContext = createContext<
@@ -94,7 +96,19 @@ export const CardBody = ({
   );
 };
 
-export const CardItem = ({
+interface CardItemProps {
+  as?: ElementType;
+  children: ReactNode;
+  className?: string;
+  translateX?: string;
+  translateY?: string;
+  translateZ?: string;
+  rotateX?: string;
+  rotateY?: string;
+  rotateZ?: string;
+}
+
+export const CardItem: React.FC<CardItemProps> = ({
   as: Tag = "div",
   children,
   className,
@@ -105,17 +119,6 @@ export const CardItem = ({
   rotateY = 0,
   rotateZ = 0,
   ...rest
-}: {
-  as?: React.ElementType;
-  children: React.ReactNode;
-  className?: string;
-  translateX?: number | string;
-  translateY?: number | string;
-  translateZ?: number | string;
-  rotateX?: number | string;
-  rotateY?: number | string;
-  rotateZ?: number | string;
-  [key: string | number]: string | number;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isMouseEntered] = useMouseEnter();
