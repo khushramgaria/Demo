@@ -42,16 +42,15 @@ const TimeLineContent2 = () => {
               </CardItem>
               <div className="flex justify-between items-center mt-20">
                 <CardItem
-                  translateZ={20}
-                  as={Link}
-                  href="https://twitter.com/mannupaaji"
-                  target="__blank"
+                  translateZ="20"
                   className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
                 >
-                  Try now →
+                  <Link href="https://twitter.com/mannupaaji" target="__blank">
+                    Try now →
+                  </Link>
                 </CardItem>
                 <CardItem
-                  translateZ={20}
+                  translateZ="20"
                   as="button"
                   className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
                 >
