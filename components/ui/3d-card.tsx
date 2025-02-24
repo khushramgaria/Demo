@@ -8,6 +8,7 @@ import React, {
   useRef,
   useEffect,
   ElementType,
+  ComponentPropsWithoutRef, useCallback,
   ReactNode,
 } from "react";
 
@@ -96,20 +97,19 @@ export const CardBody = ({
   );
 };
 
-interface CardItemProps {
-  as?: ElementType;
+interface CardItemProps<T extends ElementType = 'div'> {
+  as?: T;
   children: ReactNode;
   className?: string;
-  translateX?: string;
-  translateY?: string;
-  translateZ?: string;
-  rotateX?: string;
-  rotateY?: string;
-  rotateZ?: string;
+  translateX?: number;
+  translateY?: number;
+  translateZ?: number;
+  rotateX?: number;
+  rotateY?: number;
+  rotateZ?: number;
 }
-
-export const CardItem: React.FC<CardItemProps> = ({
-  as: Tag = "div",
+export const CardItem = <T extends ElementType = 'div'>({
+  as: Component = 'div',
   children,
   className,
   translateX = 0,
@@ -118,8 +118,7 @@ export const CardItem: React.FC<CardItemProps> = ({
   rotateX = 0,
   rotateY = 0,
   rotateZ = 0,
-  ...rest
-}) => {
+}: CardItemProps<T> & ComponentPropsWithoutRef<T>) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isMouseEntered] = useMouseEnter();
 
@@ -139,13 +138,12 @@ export const CardItem: React.FC<CardItemProps> = ({
   }, [isMouseEntered, handleAnimations]);
 
   return (
-    <Tag
+    <Component
       ref={ref}
       className={cn("w-fit transition duration-200 ease-linear", className)}
-      {...rest}
     >
       {children}
-    </Tag>
+    </Component>
   );
 };
 
